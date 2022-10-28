@@ -33,18 +33,58 @@ const getABlog = async (req, res) => {
 };
 
 // CREATE a new blog
-const createBlog = (req, res) => {
-  res.status(200).json("create a blogs");
+const createBlog = async (req, res) => {
+  const newBlog = req.body;
+
+  try {
+    const blog = await blogModel.create(newBlog);
+    res.status(200).json(blog);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 };
 
 // UPDATE a blog
-const updateBlog = (req, res) => {
-  res.status(200).json("update a blogs");
+const updateBlog = async (req, res) => {
+  const { id } = req.params;
+  const { body } = req;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "No such blog" });
+  }
+
+  try {
+    const blog = await blogModel.findByIdAndUpdate({ _id: id }, { ...body });
+
+    if (!blog) {
+      return res.status(404).json({ error: "No such blog" });
+    }
+
+    res.status(200).json(blog);
+  } catch (error) {
+    res.status(404).json({ error: err.message });
+  }
 };
 
 // DELETE a blog
-const deleteBlog = (req, res) => {
-  res.status(200).json("delete a blogs");
+const deleteBlog = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "No such blog" });
+  }
+
+  try {
+    const blog = await blogModel.findByIdAndDelete({ _id: id });
+
+    if (!blog) {
+      return res.status(404).json({ error: "No such blog" });
+    }
+
+    res.status(200).json(blog);
+  } catch (error) {
+    res.status(404).json({ error: err.message });
+  }
 };
 
 module.exports = {
