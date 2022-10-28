@@ -14,6 +14,7 @@ const getAllBlogs = async (req, res) => {
 
 // GET a single blog
 const getABlog = async (req, res) => {
+  count++;
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
