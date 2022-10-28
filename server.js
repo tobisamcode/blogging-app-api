@@ -25,6 +25,7 @@ app.use(function(err, req, res, next) {
   res.json({ error: err.message });
 });
 
+// listen for request
 connectToMongoDB(
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
