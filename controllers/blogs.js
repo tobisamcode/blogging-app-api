@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const blogModel = require("../models/blogs");
+const readingTime = require("reading-time");
 
 // GET all blogs
 const getAllBlogs = async (req, res) => {
@@ -34,10 +35,20 @@ const getABlog = async (req, res) => {
 
 // CREATE a new blog
 const createBlog = async (req, res) => {
-  const newBlog = req.body;
+  const { title, description, body, author, tags } = req.body;
+
+  const stats = readingTime(body);
+  const { text } = stats;
 
   try {
-    const blog = await blogModel.create(newBlog);
+    const blog = await blogModel.create({
+      title,
+      description,
+      body,
+      author,
+      tags,
+      reading_time: text
+    });
     res.status(200).json(blog);
   } catch (err) {
     res.status(400).json({ error: err.message });
