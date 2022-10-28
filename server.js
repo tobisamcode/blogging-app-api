@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 
 const { connectToMongoDB } = require("./connectDB/db");
 
+const blogRoutes = require("./routes/blogs");
+
 // express app
 const app = express();
 
@@ -24,6 +26,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.json({ error: err.message });
 });
+
+// - Routes
+app.use("/api/blogs", blogRoutes);
 
 // listen for request
 connectToMongoDB(
