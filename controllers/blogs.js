@@ -14,7 +14,6 @@ const getAllBlogs = async (req, res) => {
 
 // GET a single blog
 const getABlog = async (req, res) => {
-  count++;
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -23,6 +22,11 @@ const getABlog = async (req, res) => {
 
   try {
     const blog = await blogModel.findById(id);
+
+    let initialCount = blog.read_count;
+    const newCount = initialCount + 1;
+
+    await blogModel.updateOne({ read_count: newCount });
 
     if (!blog) {
       return res.status(404).json({ error: "No such blog" });
