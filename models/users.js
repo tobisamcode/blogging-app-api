@@ -43,7 +43,6 @@ userSchema.statics.signUP = async function(email, password) {
   }
 
   const exists = this.findOne({ email });
-
   if (exists) {
     throw Error("Email already in use!");
   }
@@ -63,7 +62,6 @@ userSchema.statics.login = async function(email, password) {
   }
 
   const user = await this.findOne({ email });
-
   if (!user) {
     throw Error("Incorrect Email!");
   }
