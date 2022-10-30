@@ -7,3 +7,5 @@ userRouter.post("/login", () => {});
 
 // signup route
 userRouter.post("/signup", () => []);
+
+module.exports = userRouter;
