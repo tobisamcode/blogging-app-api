@@ -1,12 +1,69 @@
 const mongoose = require("mongoose");
+
 const blogModel = require("../models/blogs");
 const readingTime = require("reading-time");
 
 // GET all blogs
 const getAllBlogs = async (req, res) => {
   try {
-    const blogs = await blogModel.find().sort({ createdAt: -1 });
-    res.status(200).json(blogs);
+    const { page, sortBy } = req.query;
+
+    if (page === null || page === undefined) {
+      return res.status(400).json({ error: "page parameter is required" });
+    }
+
+    if (!(page instanceof Number)) {
+      return res.status(400).json({ error: "invalid page number specified" });
+    }
+
+    if (sortBy === null || sortBy === undefined) {
+      const blogs = await blogModel.find({});
+      return res.status(200).json({ data: blogs });
+    }
+
+    const options = {
+      page: page,
+      limit: 20,
+      collation: {
+        locale: "en"
+      },
+      lean: true
+    };
+
+    if (
+      (sortBy !== "timestamp") &
+      (sortBy !== "read-count") &
+      (sortBy !== "read-time")
+    ) {
+      return res.status(400).json({ error: "invalid sortBy parameter" });
+    }
+
+    if (sortBy === "timestamp") {
+      options.sort = {
+        timestamp: -1
+      };
+
+      const paginatedBlogs = await blogModel.paginate({}, options);
+      return res.status(200).json({ data: paginatedBlogs.docs });
+    }
+
+    if (sortBy === "read-count") {
+      options.sort = {
+        read_count: -1
+      };
+
+      const paginatedBlogs = await blogModel.paginate({}, options);
+      return res.status(200).json({ data: paginatedBlogs.docs });
+    }
+
+    if (sortBy === "read-time") {
+      options.sort = {
+        reading_time: -1
+      };
+
+      const paginatedBlogs = await blogModel.paginate({}, options);
+      return res.status(200).json({ data: paginatedBlogs });
+    }
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
