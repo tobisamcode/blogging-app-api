@@ -26,9 +26,13 @@ app.use(function(err, req, res, next) {
   console.log(err);
   res.status(err.status || 500);
   res.json({ error: err.message });
+  next();
 });
 
 // - Routes
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "welcome to my blog api" });
+});
 app.use("/api/blogs", blogRoutes);
 app.use("/", userRoutes);
 
