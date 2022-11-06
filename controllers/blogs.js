@@ -6,13 +6,18 @@ const readingTime = require("reading-time");
 // GET all blogs
 const getAllBlogs = async (req, res) => {
   try {
-    const { page, sortBy } = req.query;
+    let { page, sortBy } = req.query;
+
+    console.log(page);
+
+    page = Number(page);
+    console.log(typeof page);
 
     if (page === null || page === undefined) {
       return res.status(400).json({ error: "page parameter is required" });
     }
 
-    if (!(page instanceof Number)) {
+    if (!(typeof page === "number")) {
       return res.status(400).json({ error: "invalid page number specified" });
     }
 
@@ -62,7 +67,7 @@ const getAllBlogs = async (req, res) => {
       };
 
       const paginatedBlogs = await blogModel.paginate({}, options);
-      return res.status(200).json({ data: paginatedBlogs });
+      return res.status(200).json({ data: paginatedBlogs.docs });
     }
   } catch (error) {
     res.status(404).json({ error: error.message });
