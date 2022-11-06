@@ -5,10 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server"
+    "dev": "nodemon server",
+    "start": "node server"
   },
   "keywords": [],
-  "author": "",
+  "engine": {
+    "node": "14.x"
+  },
+  "author": "Samuel",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
