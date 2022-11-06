@@ -1,8 +1,10 @@
 const User = require("../models/users");
 const jwt = require("jsonwebtoken");
 
-const createToken = _id => {
-  return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+const createToken = (_id, email) => {
+  return jwt.sign({ id: _id, email: email }, process.env.JWT_SECRET, {
+    expiresIn: "1d"
+  });
 };
 
 // login user
@@ -13,7 +15,7 @@ const loginUser = async (req, res) => {
     const user = await User.login(email, password);
 
     // createToken
-    const token = createToken(user._id);
+    const token = createToken(user._id, email);
 
     res.status(200).json({ email, token });
   } catch (error) {
@@ -29,7 +31,7 @@ const signupUser = async (req, res) => {
     const user = await User.signup(email, password, first_name, last_name);
 
     // create token
-    const token = createToken(user._id);
+    const token = createToken(user._id, email);
 
     res.status(200).json({ email, first_name, last_name, token });
   } catch (error) {
