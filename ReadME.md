@@ -57,14 +57,75 @@ This is an api for a blog app
 
 ### Blogs
 
-| field         | data_type | constraints                            |
-| ------------- | --------- | -------------------------------------- |
-| id            | string    | required                               |
-| created_at    | date      | required                               |
-| State         | number    | required, enum: ['draft', 'published'] |
-| Tags          | number    | required                               |
-| Author        | string    | required                               |
-| iRead_Count   | Number    | required                               |
-| item.price    | number    | required                               |
-| item.size     | string    | required, enum: ['m', 's', 'l']        |
-| item.quantity | number    | required, enum: ['m', 's', 'l']        |
+| field       | data_type | constraints                            |
+| ----------- | --------- | -------------------------------------- |
+| id          | string    | required                               |
+| Title       | string    | required                               |
+| Description | string    | required                               |
+| Body        | string    | required                               |
+| Author      | string    | required                               |
+| Tags        | number    | required, enum: ['draft', 'published'] |
+| Read_Count  | number    | required, default: 0                   |
+| Read_time   | string    | required                               |
+
+## APIs
+
+---
+
+### Signup User
+
+- Route: /signup
+- Method: POST
+- Body:
+
+```
+{
+  "first_name": "jon",
+  "last_name": "doe",
+  "email": "doe@example.com",
+  "password": "Password1"
+}
+```
+
+- Responses
+
+Success
+
+```
+{
+    message: 'Sign up was successful',
+    user: {
+        "email": "doe@example.com",
+        "first_name": "jon",
+        "last_name": "doe",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ"
+    }
+}
+```
+
+---
+
+### Login User
+
+- Route: /login
+- Method: POST
+- Body:
+
+```
+{
+  "password": "Password1",
+  "username": 'jon_doe",
+}
+```
+
+- Responses
+
+Success
+
+```
+{
+    message: 'Login successful',
+    email: 'jon_doe",
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ"
+}
+```
