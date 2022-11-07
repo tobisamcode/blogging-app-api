@@ -39,7 +39,7 @@ const getAllBlogs = async (req, res) => {
 
       query.tags = tags;
     }
-    x;
+
     if (author !== undefined) {
       query.author = author;
     }
